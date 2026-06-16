@@ -1,0 +1,73 @@
+# User Interaction & Translation Rules
+# Act as Senior Flutter Develper
+# i am developing for both android & ios so always do configs for both e.g adding a package add condig for android and ios both 
+
+* **Translation Requests**: When the user uses the word "translate" or requests translation, it strictly means that everything (code structure, UI layouts, logic, architecture, styles, and variable names) must remain exactly the same; only change/translate the user-facing language strings or text.
+
+# Architectural Rules
+
+* **Data Flow**: `UI -> controller (only provide and update the state of UI) -> interface -> service (all the busines logic here like the json the model conversions etx)-> interface->repo(just to take and provide the data) -> interface -> api client`
+* **State Management & GetX Rules**:
+  * **Prefer `GetBuilder`**: Use standard variables with public getters/setters and call `update()` in combination with `GetBuilder` for controller-level and page-level states.
+  * **Limit `Rx` / `Obx`**: Avoid using reactive variables (`RxBool`, `RxString`, `obs`, etc.) and `Obx` for complex views or entire screens. Restrict `Rx`/`Obx` usage strictly to very small, localized, self-contained UI states (e.g. simple toggles, specific loading spinners).
+* **Feature Folder Structure**: When adding a new feature or screen, strictly follow the established Clean Architecture feature-first structure as shown in `lib/features/auth/`:
+  * **Data Layer (`data/`)**: Place data models in `data/model/` and repositories in `data/repository/`. Every repository must implement a corresponding repository interface defined in `data/repository/` (e.g. `auth_repo.dart` implements `auth_repo_interface.dart`).
+  * **Domain Layer (`domain/`)**: Place dependency injection bindings (like GetX bindings) in `domain/binding/` (e.g. `auth_binding.dart`).
+  * **Presentation Layer (`presentation/`)**: Place controllers in `presentation/controller/`, screen view files in `presentation/view/`, and feature-specific / screen-specific widgets or components in `presentation/components/`.
+* **No Models in View Files**: Data models must never be declared or defined directly inside screen, view, widget, or controller files. All data models must reside in their respective feature's data model folder (e.g., `lib/features/<feature>/data/model/`).
+* **Storage Restriction**: Use only `flutter_secure_storage` for key-value, preference, and local token storage. Do not use `shared_preferences` anywhere in the project.
+* **Core API Directory Restriction**: Only `api_client.dart` and `api_client_interface.dart` are allowed inside the `lib/core/api/` directory.
+* **Core Network Configuration**: All shared networking setups, including raw `Dio` configurations and custom interceptors, must be stored in `lib/core/network/`.
+* **No Feature-Specific API Clients**: Do not use feature-specific or generated API clients (such as Retrofit). All repositories must call `ApiClient` (`api_client.dart` / `api_client_interface.dart`) directly for networking requests to consolidate HTTP configuration and ensure consistent error handling.
+* **Widget Construction**: Do not use widget builder helper functions inside widgets; use separate Stateless or Stateful widgets instead (in their own files if needed).
+* **No `copyWith`**: Avoid using `copyWith` methods/functions.
+* **DRY (Don't Repeat Yourself) Principle**: Strictly follow the DRY principle. Eliminate redundant or boilerplate code and avoid duplicating logic.
+* **SOLID Principles**: Adhere to SOLID programming principles to ensure high maintainability, single responsibility, and decoupled component architecture.
+* **Reusable Widgets & Animations**: Reuse shared widgets and animations located under `lib/core/widgets/`, `lib/core/animations/`, or relevant shared directories. If a reusable widget or animation helper is missing, create it in these shared folders. However, if a widget is screen-specific or feature-specific, do not place it in the global/core widget folders; place it in the `presentation/components/` folder of the respective feature instead.
+* **File Length Limits**: Files should not exceed a soft limit of 200 lines and a hard limit of 300 lines.
+* **Formatting (Trailing Commas)**: When writing Dart code, do not add a trailing comma at the end of parameter/argument lists to keep lines compact during formatting (adding trailing commas causes the formatter to break them into multiple lines).
+* **ScreenUtil Scaling Rule**: Use `.sp` only for everything (size, height, width, padding, margin, border radius, font size, etc.). Do not use `.r`, `.h`, `.w`, etc.
+* **No Private Variables in UI**: Do not use private member variables, fields, controllers, form keys, or helper methods (prefixed with a leading underscore `_`) inside UI view or widget classes. All fields and helper methods inside views/widgets must be non-private (public) without the `_` prefix.
+* **Direct Navigation Functions**: Use the helper navigation functions (like `pop`, `launchScreen`, etc.) directly as callbacks (e.g. `onPressed: pop`) rather than wrapping them in unnecessary local helper functions (like `handleBack() { pop(); }`).
+* **No onInit in Controllers**: Do not use the `onInit()` method of `GetxController` to initialize data or state. Instead, invoke initialization methods directly in the controller's constructor.
+* **Use Strongly-Typed Models**: Avoid using raw `Map<String, dynamic>` (JSON-like structures) or dynamic types to represent structured UI data (such as slides, list items, configurations, tabs). Instead, define strongly-typed classes/models to enforce compile-time safety and enable auto-complete.
+* **High Code Readability and Maintainability**: Prioritize code readability and maintainability across all files. Write clean, modular, and self-documenting code with sensible variable names, and keep methods short and single-purpose.
+* **High Security and Reverse Engineering Protection**:
+  * **API Keys & Credentials**: Do not hardcode sensitive credentials, private keys, API secrets, or passwords directly in source code. Use compile-time environment variables (`--dart-define` / `String.fromEnvironment`) or load them dynamically from secure storage at runtime.
+  * **Reverse Engineering & Code Obfuscation**: Secure the application against reverse engineering. Always enable Flutter code obfuscation (`--obfuscate` and `--split-debug-info`) during production builds to obscure class, method, and field names. Use root/jailbreak detection, SSL pinning, and cryptographically secure storage (like `flutter_secure_storage`) for any sensitive user token/data.
+* **Theming Rules**: Do not define hardcoded `ThemeData` or styles directly in `lib/main.dart` or other UI files. Always import and use the central themes defined in `lib/core/theme/` (e.g. `light_theme.dart` and `dark_theme.dart`). Do not use any color directly (e.g. `Colors.white`, `AppColors.primary`, or hex colors like `Color(0xFF...)`) in UI views; always use `context.theme` (such as `context.theme.primaryColor`, `context.theme.scaffoldBackgroundColor`, etc.) to guarantee seamless dynamic light/dark mode adaptation.
+* **Styling & Layout Consistency**: Always import and use `lib/core/utils/style.dart` for defining and applying text styles, border radiuses, and padding across the application. Do not declare ad-hoc or hardcoded `TextStyle` definitions, `BorderRadius` shapes, or `EdgeInsets` margins/paddings directly inside UI view files; use the pre-configured utilities in `style.dart` to maintain layout consistency.
+* **Assets & Images**: Always define asset paths as static constants in the `Images` class located in `lib/core/utils/images.dart`. Do not use hardcoded asset path strings or remote URLs for local brand/social media icons directly in UI view files.
+
+
+# Premium UI & Interaction Rules
+
+To build a UI that feels "alive"—especially for heavy tools and hardware—UI engineering must prioritize physics, tactile feedback, spatial continuity, and the illusion of zero latency.
+
+* **ListView over SingleChildScrollView**: If a `SingleChildScrollView` nests a `Column`, use a `ListView` as the root widget instead in that scenario.
+* **Slivers and Custom Scrolls**: Utilize interactive UI Slivers (`SliverAppBar`, `SliverList`, etc.) for smooth transitions, such as collapsing image galleries transitioning into technical specifications.
+* **Interactive Components**: Use active/interactive components to make the UI feel alive and responsive.
+* **Pinch-to-Zoom**: Support pinch-to-zoom for detailed inspecting of products (e.g. blades, chuck types) using `photo_view` or `InteractiveViewer`.
+* **Faceted Filtering**: Implement sliding bottom sheets (`DraggableScrollableSheet`) or end-drawers for complex filters (sliders for price, checkboxes for brands, radio buttons for power).
+* **Checkout Flow**: Use a step-by-step layout (`Stepper` widget) broken down logically (Shipping Address -> Shipping Method -> Payment -> Review).
+* **High-Performance List Scrolling**: Ensure smooth 60/120fps scrolling on Product Listing Pages (PLP) by using `ListView.builder` or `GridView.builder` with pagination libraries (e.g. `infinite_scroll_pagination`).
+* **Navigation Architecture**: Combine a Bottom Navigation Bar (Home, Categories, Cart, Account) with a persistent, easily accessible Search App Bar.
+* **Confirmation Dialogs**: Always display a confirmation dialog/sheet (using `showConfirmationDialog` or `showConfirmationSheet`) for critical, destructive, or irreversible actions (such as signing out, deleting an account, or clearing data).
+
+## Premium Micro-Interactions
+
+* **Tactile Haptic Feedback**:
+  * **Micro-Haptics**: Use `HapticFeedback.lightImpact()` on adjustments (sliders, increasing quantity, etc.).
+  * **Success States**: Use `HapticFeedback.mediumImpact()` on successful actions (e.g. item added to cart).
+  * **Error States**: Use `HapticFeedback.heavyImpact()` combined with a visual shake animation for form errors or failed promos.
+* **Physics-Based Transitions**:
+  * **Mechanical Buttons**: Wrap primary buttons in a `GestureDetector` with an `AnimationController` and `ScaleTransition` (e.g. shrink to 0.95 and spring back on release) to simulate a physical mechanical switch.
+  * **State Morphing**: Favor `AnimatedSwitcher` or `TweenAnimationBuilder` to animate icons (like scaling/popping a favorite heart icon when toggled) instead of static image switches.
+  * **Spatial Continuity (Hero Journey)**: Use Flutter's `Hero` widget to fly and scale images seamlessly between lists/grids and product detail screens.
+  * **Shared Axis Transitions**: Use the `animations` package's horizontal `SharedAxisTransition` for stepper wizard navigation to communicate forward momentum.
+* **The "Zero-Latency" Illusion**:
+  * **Optimistic UI Updates**: Immediately update counters, badges, or item lists (e.g. cart badge incrementing) before the network request finishes, reverting only if the request fails.
+  * **Image Pre-caching**: Use `precacheImage()` to silently prefetch next-page asset images in the background as the user scrolls.
+  * **Fluid Gestures**: Support swipes over taps (e.g., swiping down full-screen images to dismiss them back to normal view).
+  * **Skeletons Over Spinners**: Display grey pulsing shimmers (`shimmer` package) in exact shapes of layout cards instead of circular loading spinners to prevent layout shifts.
+  * **Tabular Figures Typography**: Enable `FontFeature.tabularFigures()` on TextStyles displaying dynamic numerical metrics (prices, quantity count, technical specs) to avoid width jitters while numbers update.

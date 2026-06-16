@@ -1,0 +1,138 @@
+import 'package:food_app_task/features/home/data/model/food_item_model.dart';
+import 'package:food_app_task/features/home/data/model/restaurant_model.dart';
+
+class DummyData {
+  static final List<String> categories = [
+    'All',
+    'Pizza',
+    'Burger',
+    'Sushi',
+    'Dessert',
+    'Drinks',
+  ];
+
+  static final List<String> bannerImages = [
+    'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=600&auto=format&fit=crop',
+  ];
+
+  static final List<FoodItemModel> foodItems = [
+    FoodItemModel(
+      id: 'f1',
+      name: 'Signature Truffle Burger',
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
+      price: 12.99,
+      originalPrice: 15.99,
+      rating: 4.8,
+      reviewsCount: 120,
+      deliveryTime: '20-30 min',
+      category: 'Burger',
+      description: 'Gourmet beef patty infused with premium black truffle oil, topped with aged white cheddar, caramelized onions, and house-made aioli on a toasted brioche bun.',
+      ingredients: ['Beef Patty', 'Truffle Oil', 'Cheddar Cheese', 'Caramelized Onions', 'Brioche Bun'],
+      nutrition: {'Calories': '680 kcal', 'Protein': '32g', 'Fat': '28g', 'Carbs': '45g'},
+    ),
+    FoodItemModel(
+      id: 'f2',
+      name: 'Spicy Pepperoni & Honey Pizza',
+      imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop',
+      price: 14.50,
+      originalPrice: 17.00,
+      rating: 4.7,
+      reviewsCount: 95,
+      deliveryTime: '25-35 min',
+      category: 'Pizza',
+      description: 'Crispy sourdough base topped with artisanal pepperoni, fresh mozzarella, jalapeños, and finished with a hot honey drizzle.',
+      ingredients: ['Sourdough', 'Pepperoni', 'Mozzarella', 'Jalapeños', 'Hot Honey'],
+      nutrition: {'Calories': '850 kcal', 'Protein': '38g', 'Fat': '34g', 'Carbs': '90g'},
+    ),
+    FoodItemModel(
+      id: 'f3',
+      name: 'Premium Dragon Roll Sushi',
+      imageUrl: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=600&auto=format&fit=crop',
+      price: 16.99,
+      rating: 4.9,
+      reviewsCount: 150,
+      deliveryTime: '30-40 min',
+      category: 'Sushi',
+      description: 'Eel and cucumber inside, wrapped with thin avocado slices on the outside, drizzled with sweet unagi sauce and toasted sesame seeds.',
+      ingredients: ['Eel', 'Cucumber', 'Avocado', 'Rice', 'Unagi Sauce'],
+      nutrition: {'Calories': '420 kcal', 'Protein': '18g', 'Fat': '14g', 'Carbs': '55g'},
+    ),
+    FoodItemModel(
+      id: 'f4',
+      name: 'Triple Chocolate Lava Cake',
+      imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=600&auto=format&fit=crop',
+      price: 6.50,
+      rating: 4.9,
+      reviewsCount: 210,
+      deliveryTime: '15-25 min',
+      category: 'Dessert',
+      description: 'Warm, decadent chocolate cake with a molten liquid fudge center, served with a scoop of Madagascar vanilla bean ice cream.',
+      ingredients: ['Dark Chocolate', 'Butter', 'Flour', 'Eggs', 'Vanilla Ice Cream'],
+      nutrition: {'Calories': '520 kcal', 'Protein': '6g', 'Fat': '24g', 'Carbs': '65g'},
+    ),
+    FoodItemModel(
+      id: 'f5',
+      name: 'Classic Cheeseburger',
+      imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=600&auto=format&fit=crop',
+      price: 9.99,
+      rating: 4.5,
+      reviewsCount: 85,
+      deliveryTime: '15-25 min',
+      category: 'Burger',
+      description: 'Classic grilled beef patty, melted cheddar, lettuce, tomato, pickles, and our signature burger sauce.',
+      ingredients: ['Beef Patty', 'Cheddar', 'Lettuce', 'Tomato', 'Pickles', 'Signature Sauce'],
+      nutrition: {'Calories': '550 kcal', 'Protein': '28g', 'Fat': '22g', 'Carbs': '40g'},
+    ),
+    FoodItemModel(
+      id: 'f6',
+      name: 'Matcha Iced Latte',
+      imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=600&auto=format&fit=crop',
+      price: 4.99,
+      rating: 4.6,
+      reviewsCount: 65,
+      deliveryTime: '10-20 min',
+      category: 'Drinks',
+      description: 'Premium ceremonial grade Uji matcha whisked and poured over cold milk and ice, sweetened with organic agave.',
+      ingredients: ['Matcha Powder', 'Milk', 'Agave Syrup', 'Ice'],
+      nutrition: {'Calories': '150 kcal', 'Protein': '6g', 'Fat': '4g', 'Carbs': '22g'},
+    )
+  ];
+
+  static final List<RestaurantModel> restaurants = [
+    RestaurantModel(
+      id: 'r1',
+      name: 'The Burger Club',
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
+      rating: 4.7,
+      reviewsCount: 450,
+      deliveryTime: '20-30 min',
+      cuisines: 'Gourmet Burgers, Sides, Milkshakes',
+      deliveryFee: 1.99,
+      distance: '1.2 km',
+    ),
+    RestaurantModel(
+      id: 'r2',
+      name: 'Pizza & Co.',
+      imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop',
+      rating: 4.6,
+      reviewsCount: 380,
+      deliveryTime: '25-35 min',
+      cuisines: 'Sourdough Pizza, Pasta, Salads',
+      deliveryFee: 0.00,
+      distance: '2.5 km',
+    ),
+    RestaurantModel(
+      id: 'r3',
+      name: 'Zen Sushi Lounge',
+      imageUrl: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=600&auto=format&fit=crop',
+      rating: 4.9,
+      reviewsCount: 520,
+      deliveryTime: '30-40 min',
+      cuisines: 'Sushi, Sashimi, Japanese Bowls',
+      deliveryFee: 2.99,
+      distance: '3.1 km',
+    ),
+  ];
+}

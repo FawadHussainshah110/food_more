@@ -1,0 +1,20 @@
+import 'package:food_app_task/core/theme/src/input_decoration_theme.dart';
+import 'package:food_app_task/imports.dart';
+
+DropdownMenuThemeData dropdownMenuThemeLight(BuildContext context) => DropdownMenuThemeData(
+  inputDecorationTheme: inputDecorationThemeLight(context),
+  textStyle: bodyMedium(context),
+  menuStyle: MenuStyle(
+    backgroundColor: WidgetStateProperty.all(cardColorLight),
+    shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: borderRadiusDefault)),
+    surfaceTintColor: WidgetStateProperty.all(dividerColorLight),
+  ),
+);
+
+DropdownMenuThemeData dropdownMenuThemeDark(BuildContext context) => dropdownMenuThemeLight(context).copyWith(
+  inputDecorationTheme: inputDecorationThemeDark(context),
+  menuStyle: MenuStyle(
+    backgroundColor: WidgetStateProperty.all(cardColorDark),
+    surfaceTintColor: WidgetStateProperty.all(dividerColorDark),
+  ),
+);
